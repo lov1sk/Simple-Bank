@@ -4,6 +4,9 @@ import { makeDepositController } from "../useCases/MakeDeposit";
 import { undoTransferController } from "../useCases/UndoTransfer";
 
 export async function transferRoutes(app: FastifyInstance) {
+  app.addHook("preHandler", async (request) => {
+    await request.jwtVerify();
+  });
   // Criação de um novo Usuario
   app.post("/new/transfer", async (request, reply) => {
     return makeTransferController.handle(request, reply);
